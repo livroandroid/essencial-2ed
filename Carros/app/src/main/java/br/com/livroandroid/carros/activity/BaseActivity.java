@@ -87,7 +87,8 @@ public class BaseActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.nav_item_site_livro:
-                snack(drawerLayout,"Clicou em site do livro");
+                startActivity(new Intent(getContext(), SiteLivroActivity.class));
+
                 break;
             case R.id.nav_item_settings:
                 toast("Clicou em configurações");
