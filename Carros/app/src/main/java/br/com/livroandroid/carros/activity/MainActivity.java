@@ -25,8 +25,8 @@ public class MainActivity extends BaseActivity {
                 snack(v,"Exemplo de FAB Button.");
             }
         });
-
     }
+
     // Configura o ViewPager + Tabs
     private void setupViewPagerTabs() {
         // ViewPager

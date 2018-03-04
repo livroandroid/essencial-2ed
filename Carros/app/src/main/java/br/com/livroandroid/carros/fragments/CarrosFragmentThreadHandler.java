@@ -2,7 +2,6 @@ package br.com.livroandroid.carros.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,10 +21,8 @@ import br.com.livroandroid.carros.activity.CarroActivity;
 import br.com.livroandroid.carros.adapter.CarroAdapter;
 import br.com.livroandroid.carros.domain.Carro;
 import br.com.livroandroid.carros.domain.CarroService;
-import br.com.livroandroid.carros.utils.AndroidUtils;
 
-public class CarrosFragment extends BaseFragment {
-    private static final String TAG = "caros";
+public class CarrosFragmentThreadHandler extends BaseFragment {
     // Tipo enviado pelos parâmetros
     private int tipo;
     // Lista de carros
@@ -36,10 +32,10 @@ public class CarrosFragment extends BaseFragment {
     private ProgressDialog dialog;
 
     // Método para instanciar esse fragment pelo tipo
-    public static CarrosFragment newInstance(int tipo) {
+    public static CarrosFragmentThreadHandler newInstance(int tipo) {
         Bundle args = new Bundle();
         args.putInt("tipo", tipo);
-        CarrosFragment f = new CarrosFragment();
+        CarrosFragmentThreadHandler f = new CarrosFragmentThreadHandler();
         f.setArguments(args);
         return f;
     }
@@ -69,35 +65,32 @@ public class CarrosFragment extends BaseFragment {
     }
 
     private void taskCarros() {
-        boolean internetOk = AndroidUtils.isNetworkAvailable(getContext());
-        Toast.makeText(getContext(), "Internet OK: " + internetOk, Toast.LENGTH_SHORT).show();
-
-        // Busca os carros: Dispara a Task
-        new GetCarrosTask().execute();
-    }
-    
-    // Task para buscar os carros
-    private class GetCarrosTask extends AsyncTask<Void,Void,List<Carro>> {
-        @Override
-        protected List<Carro> doInBackground(Void... params) {
-            try {
-                // Busca os carros em background (Thread)
-                return CarroService.getCarros(getContext(), tipo);
-            } catch (IOException e) {
-                Log.e(TAG,"Erro: " + e.getMessage());
-                return null;
+        // Mostra uma janela de progresso
+        dialog = ProgressDialog.show(getActivity(), "Exemplo",
+                "Por favor, aguarde...", false, true);
+        new Thread(){
+            @Override
+            public void run() {
+                try {
+                    // Busca os carros em uma thread
+                    carros = CarroService.getCarros(getContext(), tipo);
+                    // Atualiza a lista na UI Thread
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            CarroAdapter adapter = new CarroAdapter(getContext(), carros, onClickCarro());
+                            recyclerView.setAdapter(adapter);
+                        }
+                    });
+                } catch (IOException e) {
+                    Log.e("livro",e.getMessage(), e);
+                } finally {
+                    // Fecha a janela de progresso
+                    dialog.dismiss();
+                }
             }
-        }
-        // Atualiza a interface
-        protected void onPostExecute(List<Carro> carros) {
-            if(carros != null) {
-                CarrosFragment.this.carros = carros;
-                // Atualiza a view na UI Thread
-                recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
-            }
-        }
+        }.start();
     }
-
 
 
     // Da mesma forma que tratamos o evento de clique em um botão (OnClickListener)
