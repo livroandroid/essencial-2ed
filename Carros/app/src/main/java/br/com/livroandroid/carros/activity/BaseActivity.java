@@ -16,8 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import br.com.livroandroid.carros.R;
+
 public class BaseActivity extends AppCompatActivity {
     protected DrawerLayout drawerLayout;
+
     // Configura a Toolbar
     protected void setUpToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -25,6 +27,7 @@ public class BaseActivity extends AppCompatActivity {
             setSupportActionBar(toolbar);
         }
     }
+
     // Configura o nav drawer
     protected void setupNavDrawer() {
         // Drawer Layout
@@ -54,8 +57,9 @@ public class BaseActivity extends AppCompatActivity {
                     });
         }
     }
+
     // Atualiza os dados do header do Navigation View
-    public static void setNavViewValues(NavigationView navView, int nome,int email, int img) {
+    public static void setNavViewValues(NavigationView navView, int nome, int email, int img) {
         View headerView = navView.getHeaderView(0);
         TextView tNome = headerView.findViewById(R.id.tNome);
         TextView tEmail = headerView.findViewById(R.id.tEmail);
@@ -102,25 +106,33 @@ public class BaseActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 // Trata o clique no botão que abre o menu
-                if(drawerLayout != null) {
+                if (drawerLayout != null) {
                     openDrawer();
                     return true;
                 }
         }
         return super.onOptionsItemSelected(item);
     }
+
     // Abre o menu lateral
     protected void openDrawer() {
-        if(drawerLayout != null) { drawerLayout.openDrawer(GravityCompat.START); }
+        if (drawerLayout != null) {
+            drawerLayout.openDrawer(GravityCompat.START);
+        }
     }
+
     // Fecha o menu lateral
     protected void closeDrawer() {
-        if(drawerLayout != null) { drawerLayout.closeDrawer(GravityCompat.START); }
+        if (drawerLayout != null) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
     }
+
     // Mostra um toast
     protected void toast(String msg) {
         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
+
     // Mostra um snack
     protected void snack(View view, String msg) {
         Snackbar.make(view, msg, 0).setAction("Ok", new View.OnClickListener() {
@@ -129,7 +141,8 @@ public class BaseActivity extends AppCompatActivity {
             }
         }).show();
     }
-    private Context getContext() {
+
+    protected Context getContext() {
         return this;
     }
 }
