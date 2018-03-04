@@ -3,20 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <!-- Toolbar -->
+
     <include layout="@layout/include_toolbar" />
-    <!-- Layout principal -->
+    <!-- layout de marcação para o fragment -->
     <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:cacheColorHint="@android:color/transparent"
-            android:clipToPadding="false"
-            android:divider="@null" android:dividerHeight="0dp"
-            android:listSelector="@android:color/transparent"
-            android:scrollbarStyle="outsideOverlay" android:scrollbars="vertical" />
-    </FrameLayout>
+        android:layout_height="match_parent" />
 </LinearLayout>

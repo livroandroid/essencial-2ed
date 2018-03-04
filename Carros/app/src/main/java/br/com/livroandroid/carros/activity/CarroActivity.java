@@ -36,7 +36,7 @@ public class CarroActivity extends BaseActivity {
 
         // Mostra a foto do carro no ImageView
         // A lib Picasso está dando uma força aqui
-        final ImageView imgView = findViewById(R.id.img);
+        final ImageView imgView = findViewById(R.id.appBarImg);
         Picasso.with(getContext()).load(carro.urlFoto).fit().into(imgView);
     }
 }
