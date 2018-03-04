@@ -7,10 +7,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.IOException;
 import java.util.List;
 
 import br.com.livroandroid.carros.R;
@@ -61,10 +63,14 @@ public class CarrosFragment extends BaseFragment {
 
     // Método que encapsula a busca dos carros
     private void taskCarros() {
-        // Busca os carros pelo tipo
-        this.carros = CarroService.getCarros(getContext(), tipo);
-        // É aqui que utiliza o adapter. O adapter fornece o conteúdo para a lista
-        recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
+        // Busca os carros
+        try {
+            this.carros = CarroService.getCarros(getContext(), tipo);
+            // Atualiza a lista
+            recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
+        } catch (IOException e) {
+            Log.e("livro",e.getMessage(), e);
+        }
     }
 
     // Da mesma forma que tratamos o evento de clique em um botão (OnClickListener)

@@ -3,14 +3,19 @@ package br.com.livroandroid.carros.domain;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Carro implements Parcelable {
     private static final long serialVersionUID = 6601006766832473959L;
     public long id;
     public String tipo;
     public String nome;
     public String desc;
+    @SerializedName("url_foto")
     public String urlFoto;
+    @SerializedName("url_info")
     public String urlInfo;
+    @SerializedName("url_video")
     public String urlVideo;
     public String latitude;
     public String longitude;
