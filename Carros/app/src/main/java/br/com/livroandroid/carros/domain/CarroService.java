@@ -14,12 +14,12 @@ import br.com.livroandroid.carros.R;
 import br.com.livroandroid.carros.utils.HttpHelper;
 
 public class CarroService {
-    private static final String BASE_URL = "http://livrowebservices.com.br/rest/carros/";
+    private static final String BASE_URL = "http://livrowebservices.com.br/rest/carros";
 
     // Busca a lista de carros pelo tipo
     public static List<Carro> getCarros(Context context, int tipo) throws IOException {
         String tipoString = getTipo(tipo);
-        String url = BASE_URL + "tipo/" + tipoString;
+        String url = BASE_URL + "/tipo/" + tipoString;
         // Faz a requisição HTTP no servidor e retorna a string com o JSON
         String json = HttpHelper.get(url);
         List<Carro> carros = parserJSON(context, json);
@@ -37,22 +37,20 @@ public class CarroService {
     }
 
     // Salva um carro
-    public static Long save(Carro carro) throws IOException {
+    public static Response save(Carro carro) throws IOException {
         // Converte o carro para JSON
         String carroJson = new Gson().toJson(carro);
         // Faz POST do JSON carro
         String json = HttpHelper.post(BASE_URL, carroJson);
-        // Converte o JSON para a classe Carro
-        Carro c = new Gson().fromJson(json, Carro.class);
-        // O servidor retorna o id ao salvar o carro.
-        Long id = c.id;
-        return id;
+        Response response = new Gson().fromJson(json, Response.class);
+        return response;
     }
 
     // Deleta um carro
     public static Response delete(Carro carro) throws IOException {
         String url = BASE_URL + "/" + carro.id;
         String json = HttpHelper.delete(url);
+        // Lê a resposta
         Response response = new Gson().fromJson(json, Response.class);
         return response;
     }

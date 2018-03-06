@@ -1,10 +1,6 @@
 package br.com.livroandroid.carros.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
 
 import br.com.livroandroid.carros.R;
 import br.com.livroandroid.carros.fragments.CarrosFragment;

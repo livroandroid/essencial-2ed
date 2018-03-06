@@ -50,4 +50,7 @@ dependencies {
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
 
+    // Bus de Eventos
+    compile 'org.greenrobot:eventbus:3.1.1';
+
 }

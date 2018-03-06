@@ -13,7 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,7 +26,7 @@ import br.com.livroandroid.carros.activity.CarroActivity;
 import br.com.livroandroid.carros.adapter.CarroAdapter;
 import br.com.livroandroid.carros.domain.Carro;
 import br.com.livroandroid.carros.domain.CarroService;
-import br.com.livroandroid.carros.utils.AndroidUtils;
+import br.com.livroandroid.carros.domain.event.RefreshListEvent;
 
 public class CarrosFragment extends BaseFragment {
     private static final String TAG = "caros";
@@ -34,6 +37,23 @@ public class CarrosFragment extends BaseFragment {
     private List<Carro> carros;
 
     private ProgressDialog dialog;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(RefreshListEvent event) {
+        taskCarros();
+    }
 
     // Método para instanciar esse fragment pelo tipo
     public static CarrosFragment newInstance(int tipo) {
@@ -69,8 +89,8 @@ public class CarrosFragment extends BaseFragment {
     }
 
     private void taskCarros() {
-        boolean internetOk = AndroidUtils.isNetworkAvailable(getContext());
-        Toast.makeText(getContext(), "Internet OK: " + internetOk, Toast.LENGTH_SHORT).show();
+//        boolean internetOk = AndroidUtils.isNetworkAvailable(getContext());
+//        Toast.makeText(getContext(), "Internet OK: " + internetOk, Toast.LENGTH_SHORT).show();
 
         // Busca os carros: Dispara a Task
         new GetCarrosTask().execute();
@@ -81,12 +101,6 @@ public class CarrosFragment extends BaseFragment {
         @Override
         protected List<Carro> doInBackground(Void... params) {
             try {
-                Carro c = new Carro();
-                c.tipo = "esportivo";
-                c.nome = "Ricardo Lecheta";
-                long id = CarroService.save(c);
-                Log.d(TAG, "Carro salvo com sucesso, id: " + id);
-
                 // Busca os carros em background (Thread)
                 return CarroService.getCarros(getContext(), tipo);
             } catch (IOException e) {
@@ -103,8 +117,6 @@ public class CarrosFragment extends BaseFragment {
             }
         }
     }
-
-
 
     // Da mesma forma que tratamos o evento de clique em um botão (OnClickListener)
     // Vamos tratar o evento de clique na lista

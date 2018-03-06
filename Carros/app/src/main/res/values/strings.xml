@@ -58,5 +58,6 @@ Versao %s<br><br>
     <string name="novo_carro">Novo Carro</string>
     <string name="classico">Clássico</string>
     <string name="esportivo">Esportivo</string>
+    <string name="action_salvar">Salvar</string>
 
 </resources>
