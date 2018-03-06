@@ -81,6 +81,12 @@ public class CarrosFragment extends BaseFragment {
         @Override
         protected List<Carro> doInBackground(Void... params) {
             try {
+                Carro c = new Carro();
+                c.tipo = "esportivo";
+                c.nome = "Ricardo Lecheta";
+                long id = CarroService.save(c);
+                Log.d(TAG, "Carro salvo com sucesso, id: " + id);
+
                 // Busca os carros em background (Thread)
                 return CarroService.getCarros(getContext(), tipo);
             } catch (IOException e) {

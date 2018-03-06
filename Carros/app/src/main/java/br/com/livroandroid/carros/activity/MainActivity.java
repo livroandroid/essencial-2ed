@@ -1,5 +1,6 @@
 package br.com.livroandroid.carros.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
@@ -23,7 +24,7 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                snack(v,"Exemplo de FAB Button.");
+                startActivity(new Intent(getContext(), CarroFormActivity.class));
             }
         });
     }

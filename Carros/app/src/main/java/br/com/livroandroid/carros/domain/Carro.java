@@ -3,9 +3,14 @@ package br.com.livroandroid.carros.domain;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
+@Entity(tableName = "carro")
 public class Carro implements Parcelable {
-    private static final long serialVersionUID = 6601006766832473959L;
+    @PrimaryKey
     public long id;
+
     public String tipo;
     public String nome;
     public String desc;
