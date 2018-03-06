@@ -13,6 +13,9 @@ import java.util.List;
 import br.com.livroandroid.carros.R;
 import br.com.livroandroid.carros.utils.HttpHelper;
 
+/*
+Implementação da classe com OkHttp
+ */
 public class CarroService {
     private static final String BASE_URL = "http://livrowebservices.com.br/rest/carros";
 

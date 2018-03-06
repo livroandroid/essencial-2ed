@@ -76,12 +76,12 @@ public class CarroActivity extends BaseActivity {
                     .setTitle(R.string.app_name)
                     .setMessage("Confirma excluir este carro?")
                     .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.sim, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             // Executa a thread para deletar o carro
                             new DeletarCarroTask().execute();
                         }
-                    });
+                    }).setNegativeButton(R.string.nao,null);
             alert.show();
             return true;
         }

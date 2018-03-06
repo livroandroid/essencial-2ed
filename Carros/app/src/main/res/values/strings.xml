@@ -59,5 +59,7 @@ Versao %s<br><br>
     <string name="classico">Clássico</string>
     <string name="esportivo">Esportivo</string>
     <string name="action_salvar">Salvar</string>
+    <string name="sim">Sim</string>
+    <string name="nao">Não</string>
 
 </resources>
