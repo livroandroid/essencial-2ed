@@ -24,6 +24,7 @@ public class CarroFormActivity extends BaseActivity {
         this.carro = getIntent().getParcelableExtra("carro");
 
         // Atualiza o título da tela com o nome do carro
-        getSupportActionBar().setTitle(carro.nome);
+        String title = carro != null ? carro.nome : getString(R.string.novo_carro);
+        getSupportActionBar().setTitle(title);
     }
 }

@@ -24,6 +24,7 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Abre a tela de cadastro
                 startActivity(new Intent(getContext(), CarroFormActivity.class));
             }
         });

@@ -54,6 +54,8 @@ Versao %s<br><br>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="action_editar">Editar</string>
     <string name="action_deletar">Deletar</string>
+
+    <string name="novo_carro">Novo Carro</string>
     <string name="classico">Clássico</string>
     <string name="esportivo">Esportivo</string>
 

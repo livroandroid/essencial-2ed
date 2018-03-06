@@ -32,24 +32,4 @@ public class CarrosActivity extends BaseActivity {
             getSupportFragmentManager().beginTransaction().add(R.id.container, frag).commit();
         }
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_carro, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_editar) {
-            Intent intent = new Intent(this, CarroFormActivity.class);
-            intent.putExtras(getIntent().getExtras());
-            startActivity(intent);
-            return true;
-        } else if(item.getItemId() == R.id.action_deletar) {
-            Toast.makeText(this, "deletar o carro", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }
