@@ -13,25 +13,21 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
-/**
- * Classe utilitária para fazer requisições HTTP com a lib OKHttp
- */
+// Classe utilitária para fazer requisições HTTP com a lib OKHttp
 public class HttpHelper {
-
     private static final String TAG = "http";
     private static final boolean LOG_ON = true;
-
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     // GET
-    public static final String get( String url) throws IOException {
+    public static final String get(String url) throws IOException {
         log("HttpHelper.get: " + url);
         Request request = new Request.Builder().url(url).get().build();
         return getJson(request);
     }
 
     // POST com JSON
-    public static final String post( String url, String json) throws IOException {
+    public static final String post(String url, String json) throws IOException {
         log("HttpHelper.post: " + url + " > " + json);
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder().url(url).post(body).build();
@@ -41,7 +37,6 @@ public class HttpHelper {
     // POST com parâmetros (form-urlencoded)
     public static final String postForm(String url, Map params) throws IOException {
         log("HttpHelper.postForm: " + url + " > " + params);
-
         FormBody.Builder builder = new FormBody.Builder();
         for (Object o : params.entrySet()) {
             Map.Entry entry = (Map.Entry) o;
@@ -66,7 +61,7 @@ public class HttpHelper {
         OkHttpClient client = new OkHttpClient();
         Response response = client.newCall(request).execute();
         ResponseBody responseBody = response.body();
-        if(responseBody != null) {
+        if (responseBody != null) {
             String json = responseBody.string();
             log("   << : " + json);
             return json;
@@ -76,7 +71,7 @@ public class HttpHelper {
     }
 
     private static void log(String s) {
-        if(LOG_ON) {
+        if (LOG_ON) {
             Log.d(TAG, s);
         }
     }
