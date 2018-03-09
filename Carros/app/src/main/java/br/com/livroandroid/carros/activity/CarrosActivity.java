@@ -14,7 +14,6 @@ public class CarrosActivity extends BaseActivity {
         setUpToolbar();
         // Mostra o botão voltar "up navigation"
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         // Mostra o tipo do carro no título
         String tipo = getString(getIntent().getIntExtra("tipo", 0));
         getSupportActionBar().setTitle(tipo);

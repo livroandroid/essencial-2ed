@@ -21,19 +21,15 @@ public class CarrosApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "CarrosApplication.onCreate()");
-
-
         // Salva a instância para termos acesso como Singleton
         instance = this;
-
         Context appContext = getApplicationContext();
-
         // Configura o Room
         dbInstance = Room.databaseBuilder(
                 appContext,
                 CarrosDatabase.class,
                 "carros.sqlite")
-			.build();
+                .build();
     }
 
     // Retorna o DAO

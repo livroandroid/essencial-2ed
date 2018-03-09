@@ -1,11 +1,13 @@
 package br.com.livroandroid.carros.fragments;
 
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,32 +30,19 @@ import br.com.livroandroid.carros.domain.Carro;
 import br.com.livroandroid.carros.domain.CarroService;
 import br.com.livroandroid.carros.domain.event.RefreshListEvent;
 
+/**
+ * A simple {@link Fragment} subclass.
+ */
 public class CarrosFragment extends BaseFragment {
-    private static final String TAG = "caros";
+    private static final String TAG = "carros";
     // Tipo enviado pelos parâmetros
     private int tipo;
     // Lista de carros
     protected RecyclerView recyclerView;
-    private List<Carro> carros;
 
     private ProgressDialog dialog;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(RefreshListEvent event) {
-        taskCarros();
-    }
+    protected List<Carro> carros;
 
     // Método para instanciar esse fragment pelo tipo
     public static CarrosFragment newInstance(int tipo) {
@@ -64,38 +53,52 @@ public class CarrosFragment extends BaseFragment {
         return f;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Registra no bus de eventos
+        EventBus.getDefault().register(this);
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // Cancela o registro no bus de eventos
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(RefreshListEvent event) {
+        // Recebeu o evento.
+        taskCarros();
+    }
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Cria a view utilizada para o fragment
         View view = inflater.inflate(R.layout.fragment_carros, container,false);
-
         // Cria a lista de carros
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setHasFixedSize(true);
-
         // Faz a leitura dos parâmetros
-        this.tipo = getArguments().getInt("tipo");
-
+        if(getArguments() != null) {
+            this.tipo = getArguments().getInt("tipo");
+        }
         return view;
     }
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // O método onResume() é chamado sempre que entrar na tela.
         taskCarros();
     }
 
-    private void taskCarros() {
-//        boolean internetOk = AndroidUtils.isNetworkAvailable(getContext());
-//        Toast.makeText(getContext(), "Internet OK: " + internetOk, Toast.LENGTH_SHORT).show();
-
+    protected void taskCarros() {
         // Busca os carros: Dispara a Task
         new GetCarrosTask().execute();
     }
-    
     // Task para buscar os carros
     private class GetCarrosTask extends AsyncTask<Void,Void,List<Carro>> {
         @Override
@@ -121,13 +124,12 @@ public class CarrosFragment extends BaseFragment {
     // Da mesma forma que tratamos o evento de clique em um botão (OnClickListener)
     // Vamos tratar o evento de clique na lista
     // A diferença é que a interface CarroAdapter.CarroOnClickListener nós mesmo criamos
-    private CarroAdapter.CarroOnClickListener onClickCarro() {
+    protected CarroAdapter.CarroOnClickListener onClickCarro() {
         return new CarroAdapter.CarroOnClickListener() {
             @Override
             public void onClickCarro(View view, int idx) {
                 // Carro selecionado
                 Carro c = carros.get(idx);
-
                 // Navega para a tela CarroActivity
                 Intent intent = new Intent(getContext(), CarroActivity.class);
                 intent.putExtra("carro", c);
@@ -135,5 +137,5 @@ public class CarrosFragment extends BaseFragment {
             }
         };
     }
-
 }
+

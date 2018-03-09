@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 
 import br.com.livroandroid.camera.lib.ImageResizeUtils;
 import br.com.livroandroid.camera.lib.SDCardUtils;
@@ -24,17 +26,18 @@ public class MainActivity extends AppCompatActivity {
     // Caminho para salvar o arquivo
     private File file;
     private ImageView imgView;
+    private static final String TAG = "carros";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        imgView = (ImageView) findViewById(R.id.imagem);
+        imgView = findViewById(R.id.imagem);
 
         final Context context = this;
 
-        ImageButton b = (ImageButton) findViewById(R.id.btAbrirCamera);
+        ImageButton b = findViewById(R.id.btAbrirCamera);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,6 +56,40 @@ public class MainActivity extends AppCompatActivity {
             // Se girou a tela recupera o estado
             file = (File) savedInstanceState.getSerializable("file");
             showImage(file);
+        }
+
+        // Upload
+        findViewById(R.id.btUpload).setOnClickListener(onClickUpload());
+    }
+
+    private View.OnClickListener onClickUpload() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new TaskUpload().execute();
+            }
+        };
+    }
+
+    // Task para favoritar o carro
+    private class TaskUpload extends AsyncTask<Void, Void, Response> {
+        @Override
+        protected Response doInBackground(Void... params) {
+            if(file != null && file.exists()) {
+                try {
+                    return UploadService.upload(file);
+                } catch (IOException e) {
+                    Log.e(TAG,"Erro ao fazer upload", e);
+                }
+            }
+            return null;
+        }
+        protected void onPostExecute(Response response) {
+            if(response != null) {
+                String msg = response.msg;
+                String url = response.url;
+                Toast.makeText(MainActivity.this, msg +"\n"+url , Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

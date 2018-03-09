@@ -7,22 +7,24 @@ import br.com.livroandroid.carros.domain.dao.CarroDAO;
 
 public class FavoritosService {
     // Retorna todos os carros favoritados
-    List<Carro> getCarros() {
+    public static List<Carro> getCarros() {
         CarroDAO dao = CarrosApplication.getInstance().getCarroDAO();
         List<Carro> carros = dao.findAll();
         return carros;
     }
+
     // Verifica se um carro está favoritado
-    boolean isFavorito(Carro carro){
+    public static boolean isFavorito(Carro carro) {
         CarroDAO dao = CarrosApplication.getInstance().getCarroDAO();
         boolean exists = dao.getById(carro.id) != null;
         return exists;
     }
+
     // Salva o carro ou deleta
-    boolean favoritar(Carro carro) {
+    public static boolean favoritar(Carro carro) {
         CarroDAO dao = CarrosApplication.getInstance().getCarroDAO();
         boolean favorito = isFavorito(carro);
-        if(favorito) {
+        if (favorito) {
             // Remove dos favoritos
             dao.delete(carro);
             return false;

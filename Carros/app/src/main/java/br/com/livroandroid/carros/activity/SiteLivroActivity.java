@@ -77,7 +77,6 @@ public class SiteLivroActivity extends BaseActivity {
                 }
                 return super.shouldOverrideUrlLoading(view, url);
             }
-
         });
     }
 }

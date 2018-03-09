@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         videoView.setMediaController(new MediaController(this));
         String url = "http://www.livroandroid.com.br/livro/carros/esportivos/ferrari_ff.mp4";
         videoView.setVideoURI(Uri.parse(url));
+//        videoView.setVideoURI(Uri.parse("/storage/sdcard/Movies/last_mohicans.3gp"));
         videoView.start();
 
         // Intent para tocar o vídeo no player nativo

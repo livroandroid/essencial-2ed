@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.widget.TextView;
 
 import br.com.livroandroid.carros.R;
+
 public class AboutDialog extends DialogFragment {
     // Método utilitário para mostrar o dialog
     public static void showAbout(android.support.v4.app.FragmentManager fm) {
@@ -28,6 +29,7 @@ public class AboutDialog extends DialogFragment {
         ft.addToBackStack(null);
         new AboutDialog().show(ft, "dialog_about");
     }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Cria o HTML com o texto de sobre o aplicativo
@@ -54,6 +56,7 @@ public class AboutDialog extends DialogFragment {
                 )
                 .create();
     }
+
     /* Lê a versão do app */
     public static String getVersionName(Activity activity) {
         PackageManager pm = activity.getPackageManager();

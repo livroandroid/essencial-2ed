@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import br.com.livroandroid.carros.R;
 import br.com.livroandroid.carros.fragments.CarrosFragment;
+import br.com.livroandroid.carros.fragments.FavoritosFragment;
 
 public class TabsAdapter extends FragmentPagerAdapter {
     private Context context;
@@ -18,8 +19,8 @@ public class TabsAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        // Quantidade de páginas
-        return 3;
+        // Agora temos 4 Tabs
+        return 4;
     }
 
     @Override
@@ -29,8 +30,10 @@ public class TabsAdapter extends FragmentPagerAdapter {
             return context.getString(R.string.classicos);
         } else if (position == 1) {
             return context.getString(R.string.esportivos);
+        } else if (position == 2) {
+            return context.getString(R.string.luxo);
         }
-        return context.getString(R.string.luxo);
+        return context.getString(R.string.favoritos);
     }
 
     @Override
@@ -41,8 +44,11 @@ public class TabsAdapter extends FragmentPagerAdapter {
             f = CarrosFragment.newInstance(R.string.classicos);
         } else if (position == 1) {
             f = CarrosFragment.newInstance(R.string.esportivos);
-        } else {
+        } else if (position == 2) {
             f = CarrosFragment.newInstance(R.string.luxo);
+        } else {
+            // Novo fragment
+            f = new FavoritosFragment();
         }
         return f;
     }

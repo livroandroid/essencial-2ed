@@ -17,6 +17,10 @@ import java.util.List;
 import br.com.livroandroid.carros.R;
 import br.com.livroandroid.carros.domain.Carro;
 
+/**
+ * Created by rlecheta on 08/03/18.
+ */
+
 public class CarroAdapter extends RecyclerView.Adapter<CarroAdapter.CarrosViewHolder> {
     protected static final String TAG = "livroandroid";
     private final Context context;

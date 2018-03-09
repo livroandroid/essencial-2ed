@@ -9,7 +9,7 @@
         <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
         <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
     </style>
-    <!-- Menu lateral em tela cheia para API Level 21 -->
+    <!-- Nav Drawer em tela cheia para API Level 21 -->
     <style name="AppTheme.NavDrawer" parent="BaseAppTheme">
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>

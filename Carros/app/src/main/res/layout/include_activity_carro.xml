@@ -72,7 +72,7 @@
                     android:layout_height="@dimen/foto_carro_adapter_height"
                     android:layout_gravity="center"
                     android:alpha="0.5" />
-                <ImageView
+                <ImageView android:id="@+id/imgPlayVideo"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
