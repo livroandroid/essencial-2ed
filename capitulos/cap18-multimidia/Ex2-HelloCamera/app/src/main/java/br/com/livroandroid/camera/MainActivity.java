@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
-    // Task para favoritar o carro
+    // Task para fazer upload
     private class TaskUpload extends AsyncTask<Void, Void, Response> {
         @Override
         protected Response doInBackground(Void... params) {

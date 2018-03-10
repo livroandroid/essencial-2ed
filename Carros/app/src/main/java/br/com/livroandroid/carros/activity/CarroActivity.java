@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -28,6 +29,7 @@ import br.com.livroandroid.carros.domain.CarroService;
 import br.com.livroandroid.carros.domain.FavoritosService;
 import br.com.livroandroid.carros.domain.Response;
 import br.com.livroandroid.carros.domain.event.RefreshListEvent;
+import br.com.livroandroid.carros.fragments.MapaFragment;
 
 public class CarroActivity extends BaseActivity {
     private static final String TAG = "carros";
@@ -60,6 +62,18 @@ public class CarroActivity extends BaseActivity {
 
         // Evento do botão Play
         findViewById(R.id.imgPlayVideo).setOnClickListener(onClickPlayVideo());
+
+        if(savedInstanceState == null) {
+            // Cria o fragment do Mapa
+            MapaFragment mapaFragment = new MapaFragment();
+            // Passa todos os parâmetros que esta activity recebeu para o fragment
+            // Dentro dos parâmetros está o carro
+            mapaFragment.setArguments(getIntent().getExtras());
+            // Adiciona o fragment no layout
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.mapaFragment, mapaFragment);
+            ft.commit();
+        }
     }
 
     private View.OnClickListener onClickPlayVideo() {

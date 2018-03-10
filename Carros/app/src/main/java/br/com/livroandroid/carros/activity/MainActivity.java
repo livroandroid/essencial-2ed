@@ -1,6 +1,9 @@
 package br.com.livroandroid.carros.activity;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -9,6 +12,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +20,7 @@ import android.view.View;
 
 import br.com.livroandroid.carros.R;
 import br.com.livroandroid.carros.adapter.TabsAdapter;
+import br.com.livroandroid.carros.utils.PermissionUtils;
 import br.com.livroandroid.carros.utils.Prefs;
 
 public class MainActivity extends BaseActivity
@@ -36,6 +41,39 @@ public class MainActivity extends BaseActivity
                 startActivity(new Intent(getContext(), CarroFormActivity.class));
             }
         });
+
+        // Solicita as permissões
+        String[] permissoes = new String[]{
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+        };
+        PermissionUtils.validate(this, 0, permissoes);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        for (int result : grantResults) {
+            if (result == PackageManager.PERMISSION_DENIED) {
+                // Alguma permissão foi negada, agora é com você :-)
+                alertAndFinish();
+                return;
+            }
+        }
+        // Se chegou aqui está OK :-)
+    }
+
+    // Mostra o alerta de erro e fecha o aplicativo.
+    private void alertAndFinish() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.app_name).setMessage("Para utilizar este aplicativo, você precisa aceitar as permissões.");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                finish();
+            }
+        });
+        builder.create().show();
     }
 
     // Configura o ViewPager + Tabs
@@ -58,14 +96,18 @@ public class MainActivity extends BaseActivity
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset,
-                                       int positionOffsetPixels) { }
+                                       int positionOffsetPixels) {
+            }
+
             @Override
             public void onPageSelected(int position) {
                 // Salva o índice da página/tab selecionada
                 Prefs.setInteger(getContext(), "tabIdx", viewPager.getCurrentItem());
             }
+
             @Override
-            public void onPageScrollStateChanged(int state) { }
+            public void onPageScrollStateChanged(int state) {
+            }
         });
 
     }
@@ -145,7 +187,6 @@ public class MainActivity extends BaseActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
 
 }
