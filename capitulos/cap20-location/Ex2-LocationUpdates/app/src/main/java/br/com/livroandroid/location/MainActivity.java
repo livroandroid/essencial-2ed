@@ -168,7 +168,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     // Para de monitorar o GPS
     protected void stopLocationUpdates() {
-        LocationServices.getFusedLocationProviderClient(this).removeLocationUpdates(locationCallback);
+        FusedLocationProviderClient locClient = LocationServices.getFusedLocationProviderClient(this);
+        locClient.removeLocationUpdates(locationCallback);
     }
 
     // Listener para monitorar o GPS
@@ -178,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Location location = locationResult.getLastLocation();
             // Atualiza o mapa
             setMapLocation(location);
+
         }
     };
 

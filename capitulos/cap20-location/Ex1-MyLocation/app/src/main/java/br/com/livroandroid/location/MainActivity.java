@@ -145,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         switch (item.getItemId()) {
             case R.id.action_my_location:
 
+                // Obtém última localização
                 getLastLocation();
 
                 return true;
@@ -164,23 +165,23 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             return;
         }
 
-        // API do Google Play Services
+        // Fused Location Provider API
         fusedClient.getLastLocation()
-                .addOnSuccessListener(new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null) {
-                            // Atualiza a localização do mapa
-                            setMapLocation(location);
-                        }
+            .addOnSuccessListener(new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if (location != null) {
+                        // Atualiza a localização do mapa
+                        setMapLocation(location);
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Não foi possível ao buscar a localização do GPS");
-                    }
-                });
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG, "Não foi possível ao buscar a localização do GPS");
+                }
+            });
     }
 
     // Atualiza a coordenada do mapa

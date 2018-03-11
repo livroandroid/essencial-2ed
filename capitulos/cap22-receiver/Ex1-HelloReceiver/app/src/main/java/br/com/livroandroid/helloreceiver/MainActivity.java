@@ -18,7 +18,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickDispararBroadcast(View view) {
-        sendBroadcast(new Intent("BINGO"));
+        Intent intent = new Intent(this, HelloReceiver.class);
+        sendBroadcast(intent);
         Toast.makeText(this, "Intent enviada!", Toast.LENGTH_SHORT).show();
     }
 }

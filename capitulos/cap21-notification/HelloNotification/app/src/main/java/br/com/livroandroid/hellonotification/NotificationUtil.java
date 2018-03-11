@@ -11,7 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 /**
- * Classe utilitária para disparar notifications
+ * Classe utilitária para disparar notificações
  */
 public class NotificationUtil {
 
@@ -19,6 +19,7 @@ public class NotificationUtil {
 
     static final String CHANNEL_ID = "1";
 
+    // Registra o canal (channel)
     public static void createChannel(Context context) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 
@@ -32,6 +33,7 @@ public class NotificationUtil {
         }
     }
 
+    // Cria uma notificação
     public static void create(Context context, int id, Intent intent, String title, String msg) {
         NotificationManager nm =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -39,7 +41,7 @@ public class NotificationUtil {
         // Intent para disparar o broadcast
         PendingIntent p = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // Cria a notification
+        // Cria a notificação
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context,CHANNEL_ID)
                 .setContentIntent(p)
                 .setContentTitle(title)
@@ -47,7 +49,7 @@ public class NotificationUtil {
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setAutoCancel(true);
 
-        // Dispara a notification
+        // Dispara a notificação
         Notification n = builder.build();
         nm.notify(id, n);
 

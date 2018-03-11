@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickAgendar(View view) {
-        Intent intent = new Intent(LembremeDeComerReceiver.ACTION);
+        Intent intent = new Intent(this,LembremeDeComerReceiver.class);
         // Agenda para daqui a 5 seg
         AlarmUtil.schedule(this, intent, getTime());
         //sendBroadcast(intent);
@@ -37,14 +37,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickAgendarComRepeat(View view) {
-        Intent intent = new Intent(LembremeDeComerReceiver.ACTION);
+        Intent intent = new Intent(this,LembremeDeComerReceiver.class);
         // Agenda para daqui a 5 seg, repete a cada 30 seg
         AlarmUtil.scheduleRepeat(this, intent, getTime(), 30 * 1000);
         Toast.makeText(this,"Alarme agendado com repetir.",Toast.LENGTH_SHORT).show();
     }
 
     public void onClickCancelar(View view) {
-        Intent intent = new Intent(LembremeDeComerReceiver.ACTION);
+        Intent intent = new Intent(this,LembremeDeComerReceiver.class);
         AlarmUtil.cancel(this,intent);
         Toast.makeText(this,"Alarme cancelado",Toast.LENGTH_SHORT).show();
     }
