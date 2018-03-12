@@ -55,18 +55,20 @@ public class MapaFragment extends BaseFragment implements OnMapReadyCallback {
                 return;
             }
             map.setMyLocationEnabled(true);
+
             // Cria o objeto LatLng com a coordenada da fábrica
-            LatLng location = new LatLng(Double.parseDouble(carro.latitude),
-                    Double.parseDouble(carro.longitude));
-            // Posiciona o mapa na coordenada da fábrica (zoom = 13)
-            CameraUpdate update = CameraUpdateFactory.newLatLngZoom(location, 13);
-            map.moveCamera(update);
-            // Marcador no local da fábrica
-            map.addMarker(new MarkerOptions().title(carro.nome).snippet(carro.desc).
-                    position(location));
-            // Tipo do mapa:
-            // (normal, satélite, terreno ou híbrido)
-            map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            if(carro.latitude != null && carro.latitude.trim().length() > 0) {
+                LatLng location = new LatLng(Double.parseDouble(carro.latitude), Double.parseDouble(carro.longitude));
+                // Posiciona o mapa na coordenada da fábrica (zoom = 13)
+                CameraUpdate update = CameraUpdateFactory.newLatLngZoom(location, 13);
+                map.moveCamera(update);
+                // Marcador no local da fábrica
+                map.addMarker(new MarkerOptions().title(carro.nome).snippet(carro.desc).
+                        position(location));
+                // Tipo do mapa:
+                // (normal, satélite, terreno ou híbrido)
+                map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            }
         }
     }
 }
