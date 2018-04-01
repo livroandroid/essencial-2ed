@@ -27,12 +27,13 @@ import br.com.livroandroid.carros.activity.CarroActivity;
 import br.com.livroandroid.carros.adapter.CarroAdapter;
 import br.com.livroandroid.carros.domain.Carro;
 import br.com.livroandroid.carros.domain.CarroService;
+import br.com.livroandroid.carros.domain.TipoCarro;
 import br.com.livroandroid.carros.domain.event.RefreshListEvent;
 
 public class CarrosFragment extends BaseFragment {
     private static final String TAG = "carros";
     // Tipo enviado pelos parâmetros
-    private int tipo;
+    private TipoCarro tipo;
     // Lista de carros
     protected  RecyclerView recyclerView;
     protected  List<Carro> carros;
@@ -80,7 +81,7 @@ public class CarrosFragment extends BaseFragment {
         recyclerView.setHasFixedSize(true);
         // Faz a leitura dos parâmetros
         if(getArguments() != null) {
-            this.tipo = getArguments().getInt("tipo");
+            this.tipo = (TipoCarro) getArguments().getSerializable("tipo");
         }
         return view;
     }

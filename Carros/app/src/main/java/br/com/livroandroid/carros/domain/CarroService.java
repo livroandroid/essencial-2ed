@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.livroandroid.carros.CarrosApplication;
-import br.com.livroandroid.carros.R;
 import br.com.livroandroid.carros.domain.dao.CarroDAO;
 import br.com.livroandroid.carros.utils.HttpHelper;
 
@@ -20,9 +19,8 @@ public class CarroService {
     private static final String BASE_URL = " http://livrowebservices.com.br/rest/carros";
 
     // Busca a lista de carros pelo tipo
-    public static List<Carro> getCarros(Context context, int tipo) throws IOException {
-        String tipoString = getTipo(tipo);
-        String url = BASE_URL + "/tipo/" + tipoString;
+    public static List<Carro> getCarros(Context context, TipoCarro tipo) throws IOException {
+        String url = BASE_URL + "/tipo/" + tipo.name();
         // Faz a requisição HTTP no servidor e retorna a string com o JSON
         String json = HttpHelper.get(url);
         List<Carro> carros = parserJSON(context, json);
@@ -52,16 +50,6 @@ public class CarroService {
             dao.delete(carro);
         }
         return response;
-    }
-
-    // Converte a constante para string, para criar a URL do web service
-    private static String getTipo(int tipo) {
-        if (tipo == R.string.classicos) {
-            return "classicos";
-        } else if (tipo == R.string.esportivos) {
-            return "esportivos";
-        }
-        return "luxo";
     }
 
     // Parser do JSON

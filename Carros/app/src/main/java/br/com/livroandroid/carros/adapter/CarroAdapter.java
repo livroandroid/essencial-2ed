@@ -26,11 +26,10 @@ public class CarroAdapter extends RecyclerView.Adapter<CarroAdapter.CarrosViewHo
     private CarroOnClickListener carroOnClickListener;
 
     // Construtor, geralmente recebe o contexto, a lista e a implementação da interface de callback
-    public CarroAdapter(Context context, List<Carro> carros, CarroOnClickListener
-            carroOnClickListener) {
+    public CarroAdapter(Context context, List<Carro> carros, CarroOnClickListener listener) {
         this.context = context;
         this.carros = carros;
-        this.carroOnClickListener = carroOnClickListener;
+        this.carroOnClickListener = listener;
     }
 
     @Override
