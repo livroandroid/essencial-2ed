@@ -1,18 +1,29 @@
 package br.com.livroandroid.carros.fragments;
 
 import android.os.AsyncTask;
+import android.os.Bundle;
 
 import java.util.List;
 
 import br.com.livroandroid.carros.adapter.CarroAdapter;
 import br.com.livroandroid.carros.domain.Carro;
 import br.com.livroandroid.carros.domain.FavoritosService;
+import br.com.livroandroid.carros.domain.TipoCarro;
 
 /**
  * Created by rlecheta on 11/03/18.
  */
 public class FavoritosFragment extends CarrosFragment {
     private static final String TAG = "carros";
+
+    public static FavoritosFragment newInstance() {
+        Bundle args = new Bundle();
+        args.putSerializable("tipo", TipoCarro.favoritos);
+        FavoritosFragment f = new FavoritosFragment();
+        f.setArguments(args);
+        return f;
+    }
+
     @Override
     protected void taskCarros() {
         // Busca os carros do Favoritos

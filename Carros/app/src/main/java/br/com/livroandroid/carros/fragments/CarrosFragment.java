@@ -40,9 +40,9 @@ public class CarrosFragment extends BaseFragment {
     private ProgressDialog dialog;
 
     // Método para instanciar esse fragment pelo tipo
-    public static CarrosFragment newInstance(int tipo) {
+    public static CarrosFragment newInstance(TipoCarro tipo) {
         Bundle args = new Bundle();
-        args.putInt("tipo", tipo);
+        args.putSerializable("tipo", tipo);
         CarrosFragment f = new CarrosFragment();
         f.setArguments(args);
         return f;

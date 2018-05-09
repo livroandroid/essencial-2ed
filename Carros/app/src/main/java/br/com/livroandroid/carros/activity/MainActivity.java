@@ -16,6 +16,7 @@ import android.view.View;
 
 import br.com.livroandroid.carros.R;
 import br.com.livroandroid.carros.adapter.TabsAdapter;
+import br.com.livroandroid.carros.domain.TipoCarro;
 import br.com.livroandroid.carros.utils.Prefs;
 
 public class    MainActivity extends BaseActivity
@@ -126,19 +127,19 @@ public class    MainActivity extends BaseActivity
             case R.id.nav_item_carros_classicos:
                 // Clássicos
                 Intent intent = new Intent(getContext(), CarrosActivity.class);
-                intent.putExtra("tipo", R.string.classicos);
+                intent.putExtra("tipo", TipoCarro.classicos);
                 startActivity(intent);
                 break;
             case R.id.nav_item_carros_esportivos:
                 // Esportivos
                 intent = new Intent(getContext(), CarrosActivity.class);
-                intent.putExtra("tipo", R.string.esportivos);
+                intent.putExtra("tipo", TipoCarro.esportivos);
                 startActivity(intent);
                 break;
             case R.id.nav_item_carros_luxo:
                 // Luxo
                 intent = new Intent(getContext(), CarrosActivity.class);
-                intent.putExtra("tipo", R.string.luxo);
+                intent.putExtra("tipo", TipoCarro.luxo);
                 startActivity(intent);
                 break;
 

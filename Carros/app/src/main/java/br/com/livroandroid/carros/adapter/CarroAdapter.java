@@ -57,7 +57,8 @@ public class CarroAdapter extends RecyclerView.Adapter<CarroAdapter.CarrosViewHo
         holder.tNome.setText(c.nome);
         holder.progress.setVisibility(View.VISIBLE);
         // Faz o download da foto e mostra o ProgressBar
-        Picasso.with(context).load(c.urlFoto).fit().into(holder.img,
+        if(c.urlFoto != null && !c.urlFoto.trim().isEmpty()) {
+            Picasso.with(context).load(c.urlFoto).fit().into(holder.img,
                 new com.squareup.picasso.Callback() {
                     @Override
                     public void onSuccess() {
@@ -70,6 +71,7 @@ public class CarroAdapter extends RecyclerView.Adapter<CarroAdapter.CarrosViewHo
                         holder.progress.setVisibility(View.GONE);
                     }
                 });
+        }
         // Click
         if (carroOnClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {

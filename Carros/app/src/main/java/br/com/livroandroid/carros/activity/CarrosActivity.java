@@ -3,6 +3,7 @@ package br.com.livroandroid.carros.activity;
 import android.os.Bundle;
 
 import br.com.livroandroid.carros.R;
+import br.com.livroandroid.carros.domain.TipoCarro;
 import br.com.livroandroid.carros.fragments.CarrosFragment;
 
 public class CarrosActivity extends BaseActivity {
@@ -15,8 +16,8 @@ public class CarrosActivity extends BaseActivity {
         // Mostra o botão voltar "up navigation"
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // Mostra o tipo do carro no título
-        String tipo = getString(getIntent().getIntExtra("tipo", 0));
-        getSupportActionBar().setTitle(tipo);
+        TipoCarro tipo = (TipoCarro) getIntent().getSerializableExtra("tipo");
+        getSupportActionBar().setTitle(getString(tipo.getResource()));
         // Adiciona o fragment com o mesmo Bundle (args) da intent
         if (savedInstanceState == null) {
             // Cria uma instância do fragment, e configura os argumentos.

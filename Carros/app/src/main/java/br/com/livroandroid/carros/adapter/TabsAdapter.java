@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import br.com.livroandroid.carros.R;
+import br.com.livroandroid.carros.domain.TipoCarro;
 import br.com.livroandroid.carros.fragments.CarrosFragment;
 import br.com.livroandroid.carros.fragments.FavoritosFragment;
 
@@ -41,14 +42,14 @@ public class TabsAdapter extends FragmentPagerAdapter {
         // Cria o fragment para cada página
         Fragment f = null;
         if (position == 0) {
-            f = CarrosFragment.newInstance(R.string.classicos);
+            f = CarrosFragment.newInstance(TipoCarro.classicos);
         } else if (position == 1) {
-            f = CarrosFragment.newInstance(R.string.esportivos);
+            f = CarrosFragment.newInstance(TipoCarro.esportivos);
         } else if (position == 2) {
-            f = CarrosFragment.newInstance(R.string.luxo);
+            f = CarrosFragment.newInstance(TipoCarro.luxo);
         } else {
             // Favoritos
-            f = new FavoritosFragment();
+            f = FavoritosFragment.newInstance();
         }
         return f;
     }
