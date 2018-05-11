@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="br.com.livroandroid.cap07_view">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name="br.com.livroandroid.views.MainActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="br.com.livroandroid.views.ExemploTextoCoresActivity"
+            android:label="@string/texto_e_cores"
+            android:parentActivityName="br.com.livroandroid.views.MainActivity" />
+        <activity
+            android:name="br.com.livroandroid.views.ExemploAutoCompleteTextViewActivity"
+            android:label="@string/autocompletetextview"
+            android:parentActivityName="br.com.livroandroid.views.MainActivity" />
+        <activity
+            android:name="br.com.livroandroid.views.ExemploImageButtonActivity"
+            android:label="@string/imagebutton"
+            android:parentActivityName="br.com.livroandroid.views.MainActivity" />
+        <activity
+            android:name="br.com.livroandroid.views.ExemploToggleButtonActivity"
+            android:label="@string/tooglebutton"
+            android:parentActivityName="br.com.livroandroid.views.MainActivity" />
+        <activity
+            android:name="br.com.livroandroid.views.ExemploCheckRadioFormActivity"
+            android:label="@string/CheckRadio"
+            android:parentActivityName="br.com.livroandroid.views.MainActivity" />
+        <activity
+            android:name="br.com.livroandroid.views.ExemploSpinnerActivity"
+            android:label="@string/Spinner"
+            android:parentActivityName="br.com.livroandroid.views.MainActivity" />
+        <activity
+            android:name="br.com.livroandroid.views.ExemploProgressDialogActivity"
+            android:label="@string/progressdialog"
+            android:parentActivityName="br.com.livroandroid.views.MainActivity" />
+        <activity
+            android:name="br.com.livroandroid.views.ExemploProgressBarActivity"
+            android:label="@string/progressbar"
+            android:parentActivityName="br.com.livroandroid.views.MainActivity" />
+        <activity
+            android:name="br.com.livroandroid.views.ExemploListViewActivity"
+            android:label="@string/listview"
+            android:parentActivityName="br.com.livroandroid.views.MainActivity" />
+        <activity
+            android:name="br.com.livroandroid.views.ExemploListViewPlanetasActivity"
+            android:label="@string/listview"
+            android:parentActivityName="br.com.livroandroid.views.MainActivity" />
+
+        <activity
+            android:name="br.com.livroandroid.views.ExemploGridViewActivity"
+            android:label="@string/gridview"
+            android:parentActivityName="br.com.livroandroid.views.MainActivity" />
+        <activity
+            android:name="br.com.livroandroid.views.ExemploGalleryActivity"
+            android:label="@string/gallery"
+            android:parentActivityName="br.com.livroandroid.views.MainActivity" />
+        <activity
+            android:name="br.com.livroandroid.views.ExemploViewPagerActivity"
+            android:label="@string/viewPager"
+            android:parentActivityName="br.com.livroandroid.views.MainActivity" />
+        <activity
+            android:name="br.com.livroandroid.views.ExemploViewPagerTitleStripActivity"
+            android:label="@string/viewPager_title_strip"
+            android:parentActivityName="br.com.livroandroid.views.MainActivity" />
+        <activity
+            android:name="br.com.livroandroid.views.ExemploViewPagerTabStripActivity"
+            android:label="@string/viewPager_tab_strip"
+            android:parentActivityName="br.com.livroandroid.views.MainActivity" />
+        <activity
+            android:name="br.com.livroandroid.views.ExemploImageSwitcherActivity"
+            android:label="@string/imageSwitcher"
+            android:parentActivityName="br.com.livroandroid.views.MainActivity" />
+        <activity
+            android:name="br.com.livroandroid.views.ExemploWebViewActivity"
+            android:label="@string/webView"
+            android:parentActivityName="br.com.livroandroid.views.MainActivity" />
+
+        <activity
+            android:name="br.com.livroandroid.views.canvas.ExemploMinhaViewActivity"
+            android:label="Minha View"
+            android:parentActivityName="br.com.livroandroid.views.MainActivity" />
+        <activity
+            android:name="br.com.livroandroid.views.canvas.TouchScreenViewActivity"
+            android:label="Touch"
+            android:parentActivityName="br.com.livroandroid.views.MainActivity" />
+    </application>
+
+</manifest>
