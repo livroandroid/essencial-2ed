@@ -10,6 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Hello Fragment2"
+        android:text="Hello Fragment2 - este label é um fragment"
         android:textSize="20sp" />
 </LinearLayout>

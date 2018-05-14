@@ -1,6 +1,7 @@
 package br.com.livroandroid.carros.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -24,15 +25,22 @@ import com.squareup.picasso.Picasso;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
+import java.util.List;
 
 import br.com.livroandroid.carros.R;
+import br.com.livroandroid.carros.adapter.CarroAdapter;
 import br.com.livroandroid.carros.domain.Carro;
-import br.com.livroandroid.carros.domain.CarroService;
+import br.com.livroandroid.carros.domain.okhttp.CarroService;
 import br.com.livroandroid.carros.domain.FavoritosService;
 import br.com.livroandroid.carros.domain.Response;
 import br.com.livroandroid.carros.domain.event.RefreshListEvent;
+import br.com.livroandroid.carros.domain.rx.CarroServiceRetrofitRx;
+import br.com.livroandroid.carros.fragments.CarrosFragment;
 import br.com.livroandroid.carros.fragments.MapaFragment;
 import br.com.livroandroid.carros.utils.PermissionUtils;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class CarroActivity extends BaseActivity {
     private static final String TAG = "carros";
@@ -133,7 +141,7 @@ public class CarroActivity extends BaseActivity {
                     .setPositiveButton(R.string.sim, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             // Executa a thread para deletar o carro
-                            new DeletarCarroTask().execute();
+                            taskDeletar();
                         }
                     }).setNegativeButton(R.string.nao,null);
             alert.show();
@@ -143,8 +151,31 @@ public class CarroActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressLint("CheckResult")
+    private void taskDeletar() {
+//        new DeletarCarroTask().execute();
+
+        CarroServiceRetrofitRx.delete(carro)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Consumer<Response>() {
+                @Override
+                public void accept(Response response) throws Exception {
+                    if(response != null) {
+                        // Dispara evento para atualizar a lista de carros
+                        EventBus.getDefault().post(new RefreshListEvent());
+
+                        // Mostra a mensagem de confirmação
+                        toast(response.msg);
+                        finish();
+                    }
+                }
+            });
+    }
+
     // Thread para deletar o carro
-    private class DeletarCarroTask extends AsyncTask<Void, Void, Response> {
+    // AsyncTask
+    /*private class DeletarCarroTask extends AsyncTask<Void, Void, Response> {
         @Override
         protected Response doInBackground(Void... params) {
             try {
@@ -167,7 +198,7 @@ public class CarroActivity extends BaseActivity {
                 finish();
             }
         }
-    }
+    }*/
 
     private View.OnClickListener onClickFavoritar() {
         return new View.OnClickListener() {

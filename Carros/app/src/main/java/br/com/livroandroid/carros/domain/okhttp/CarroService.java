@@ -1,4 +1,4 @@
-package br.com.livroandroid.carros.domain;
+package br.com.livroandroid.carros.domain.okhttp;
 
 import android.content.Context;
 
@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.livroandroid.carros.CarrosApplication;
+import br.com.livroandroid.carros.domain.Carro;
+import br.com.livroandroid.carros.domain.Response;
+import br.com.livroandroid.carros.domain.TipoCarro;
 import br.com.livroandroid.carros.domain.dao.CarroDAO;
 import br.com.livroandroid.carros.utils.HttpHelper;
 

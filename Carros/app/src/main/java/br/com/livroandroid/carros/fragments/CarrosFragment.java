@@ -21,14 +21,21 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import br.com.livroandroid.carros.R;
 import br.com.livroandroid.carros.activity.CarroActivity;
 import br.com.livroandroid.carros.adapter.CarroAdapter;
 import br.com.livroandroid.carros.domain.Carro;
-import br.com.livroandroid.carros.domain.CarroService;
+import br.com.livroandroid.carros.domain.okhttp.CarroService;
 import br.com.livroandroid.carros.domain.TipoCarro;
 import br.com.livroandroid.carros.domain.event.RefreshListEvent;
+import br.com.livroandroid.carros.domain.retrofit.CarroServiceRetrofit;
+import br.com.livroandroid.carros.domain.rx.CarroServiceRetrofitRx;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class CarrosFragment extends BaseFragment {
     private static final String TAG = "carros";
@@ -92,12 +99,42 @@ public class CarrosFragment extends BaseFragment {
         taskCarros();
     }
 
-    protected  void taskCarros() {
+    protected void taskCarros() {
         // Busca os carros: Dispara a Task
-        new GetCarrosTask().execute();
+        //new GetCarrosTask().execute();
+
+//        progress.setVisibility(View.VISIBLE);
+
+        // Criar Observable e chamar o Retrofit
+//        Observable.fromCallable(new Callable<List<Carro>>() {
+//            @Override
+//            public List<Carro> call() throws Exception {
+//                // Busca a lista de carros
+//                return CarroServiceRetrofit.getCarros(getContext(), tipo);
+//            }
+//        })
+
+        // Agora o Retrofit já cria um Observable
+        CarroServiceRetrofitRx.getCarros(tipo)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<List<Carro>>() {
+            @Override
+            public void accept(List<Carro> carros) {
+                if (carros != null) {
+                    CarrosFragment.this.carros = carros;
+                    // Atualiza a view na UI Thread
+                    recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
+//                            progress.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
     }
 
     // Task para buscar os carros
+    /*
+    CODIGO COM ASYNC TASK PARA ESTUDO
+
     private class GetCarrosTask extends AsyncTask<Void, Void, List<Carro>> {
         @Override
         protected List<Carro> doInBackground(Void... params) {
@@ -118,8 +155,7 @@ public class CarrosFragment extends BaseFragment {
                 recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
             }
         }
-    }
-
+    }*/
 
     // Da mesma forma que tratamos o evento de clique em um botão (OnClickListener)
     // Vamos tratar o evento de clique na lista

@@ -1,5 +1,6 @@
 package br.com.livroandroid.carros.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -22,15 +23,26 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 import br.com.livroandroid.carros.R;
+import br.com.livroandroid.carros.adapter.CarroAdapter;
 import br.com.livroandroid.carros.domain.Carro;
-import br.com.livroandroid.carros.domain.CarroService;
+import br.com.livroandroid.carros.domain.okhttp.CarroService;
 import br.com.livroandroid.carros.domain.Response;
 import br.com.livroandroid.carros.domain.UploadService;
 import br.com.livroandroid.carros.domain.event.RefreshListEvent;
+import br.com.livroandroid.carros.domain.retrofit.CarroServiceRetrofit;
+import br.com.livroandroid.carros.domain.rx.CarroServiceRetrofitRx;
+import br.com.livroandroid.carros.domain.rx.CarrosRetrofitRx;
+import br.com.livroandroid.carros.fragments.CarrosFragment;
 import br.com.livroandroid.carros.utils.ImageResizeUtils;
 import br.com.livroandroid.carros.utils.SDCardUtils;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class CarroFormActivity extends BaseActivity {
 
@@ -151,14 +163,58 @@ public class CarroFormActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.action_salvar) {
-            new SalvarCarroTask().execute();
+            taskSalvar();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    // AsyncTask
+    @SuppressLint("CheckResult")
+    private void taskSalvar() {
+        // AsyncTask
+//        new SalvarCarroTask().execute();
+
+        // Cria o carro para salvar
+        Observable.fromCallable(new Callable<Response>() {
+            @Override
+            public Response call() throws Exception {
+                // Cria o carro para salvar
+                Carro c = getCarro();
+
+                // Upload da foto
+                if(file != null && file.exists()) {
+                    Response response = UploadService.upload(file);
+                    if(response.isOk()) {
+                        c.urlFoto = response.url;
+                    }
+                }
+
+                // Salva o carro
+                Response response = CarroServiceRetrofit.save(c);
+                return response;
+            }
+        }).subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<Response>() {
+            @Override
+            public void accept(Response response) throws Exception {
+                if(response != null) {
+                    // Dispara evento para atualizar a lista de carros
+                    EventBus.getDefault().post(new RefreshListEvent());
+
+                    // Mostra alerta de sucesso
+                    toast(response.msg);
+                    Log.d(TAG,"Carro salvo: " + response.id);
+                    finish();
+                }
+            }
+        });
+    }
+
     // Task para buscar os carros
-    private class SalvarCarroTask extends AsyncTask<Void, Void, Response> {
+    // AsyncTask
+    /*private class SalvarCarroTask extends AsyncTask<Void, Void, Response> {
         @Override
         protected Response doInBackground(Void... params) {
             try {
@@ -194,7 +250,7 @@ public class CarroFormActivity extends BaseActivity {
                 finish();
             }
         }
-    }
+    }*/
 
     // Cria um carro com os valores do formulário
     private Carro getCarro() {
