@@ -1,16 +1,15 @@
 package br.com.livroandroid.carros.fragments;
 
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,20 +18,15 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import br.com.livroandroid.carros.R;
 import br.com.livroandroid.carros.activity.CarroActivity;
 import br.com.livroandroid.carros.adapter.CarroAdapter;
 import br.com.livroandroid.carros.domain.Carro;
-import br.com.livroandroid.carros.domain.okhttp.CarroService;
 import br.com.livroandroid.carros.domain.TipoCarro;
 import br.com.livroandroid.carros.domain.event.RefreshListEvent;
-import br.com.livroandroid.carros.domain.retrofit.CarroServiceRetrofit;
 import br.com.livroandroid.carros.domain.rx.CarroServiceRetrofitRx;
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -99,6 +93,7 @@ public class CarrosFragment extends BaseFragment {
         taskCarros();
     }
 
+    @SuppressLint("CheckResult")
     protected void taskCarros() {
         // Busca os carros: Dispara a Task
         //new GetCarrosTask().execute();

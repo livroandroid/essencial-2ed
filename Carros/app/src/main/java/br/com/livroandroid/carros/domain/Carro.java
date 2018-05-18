@@ -1,10 +1,9 @@
 package br.com.livroandroid.carros.domain;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 @Entity(tableName = "carro")
 public class Carro implements Parcelable {

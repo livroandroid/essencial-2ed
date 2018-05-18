@@ -5,7 +5,6 @@ import android.content.Context;
 import java.io.IOException;
 import java.util.List;
 
-import br.com.livroandroid.carros.R;
 import br.com.livroandroid.carros.domain.Carro;
 import br.com.livroandroid.carros.domain.Response;
 import br.com.livroandroid.carros.domain.TipoCarro;

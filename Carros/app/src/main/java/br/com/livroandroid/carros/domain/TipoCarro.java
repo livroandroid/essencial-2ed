@@ -2,8 +2,6 @@ package br.com.livroandroid.carros.domain;
 
 import android.content.Context;
 
-import java.io.Serializable;
-
 import br.com.livroandroid.carros.R;
 
 public enum TipoCarro {

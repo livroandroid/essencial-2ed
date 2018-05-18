@@ -7,13 +7,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,20 +22,17 @@ import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.IOException;
-import java.util.List;
+import java.util.concurrent.Callable;
 
 import br.com.livroandroid.carros.R;
-import br.com.livroandroid.carros.adapter.CarroAdapter;
 import br.com.livroandroid.carros.domain.Carro;
-import br.com.livroandroid.carros.domain.okhttp.CarroService;
 import br.com.livroandroid.carros.domain.FavoritosService;
 import br.com.livroandroid.carros.domain.Response;
 import br.com.livroandroid.carros.domain.event.RefreshListEvent;
 import br.com.livroandroid.carros.domain.rx.CarroServiceRetrofitRx;
-import br.com.livroandroid.carros.fragments.CarrosFragment;
 import br.com.livroandroid.carros.fragments.MapaFragment;
 import br.com.livroandroid.carros.utils.PermissionUtils;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -112,8 +107,29 @@ public class CarroActivity extends BaseActivity {
         super.onResume();
         if (carro != null) {
             // Muda a cor do FAB do coração se o carro está favoritado
-            new TaskLoadFavoritos().execute();
+            taskLoadFavoritos();
         }
+    }
+
+    @SuppressLint("CheckResult")
+    private void taskLoadFavoritos() {
+
+        Observable.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                // Verifica se o carro está favoritado.
+                Boolean favorito = FavoritosService.isFavorito(carro);
+                return favorito;
+            }
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean favorito) throws Exception {
+                setFavoriteColor(favorito);
+            }
+        });
     }
 
     @Override
@@ -161,14 +177,14 @@ public class CarroActivity extends BaseActivity {
             .subscribe(new Consumer<Response>() {
                 @Override
                 public void accept(Response response) throws Exception {
-                    if(response != null) {
-                        // Dispara evento para atualizar a lista de carros
-                        EventBus.getDefault().post(new RefreshListEvent());
+                if(response != null) {
+                    // Dispara evento para atualizar a lista de carros
+                    EventBus.getDefault().post(new RefreshListEvent());
 
-                        // Mostra a mensagem de confirmação
-                        toast(response.msg);
-                        finish();
-                    }
+                    // Mostra a mensagem de confirmação
+                    toast(response.msg);
+                    finish();
+                }
                 }
             });
     }
@@ -204,27 +220,35 @@ public class CarroActivity extends BaseActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Dispara a thread
-                new TaskFavoritar().execute();
+                taskFavoritar();
             }
         };
     }
 
-    // Task para favoritar o carro
-    private class TaskFavoritar extends AsyncTask<Void, Void, Boolean> {
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // Salva o carro no banco de dados
-            return FavoritosService.favoritar(carro);
-        }
-        protected void onPostExecute(Boolean favoritado) {
-            // Alerta de sucesso
-            toast(favoritado ? R.string.msg_carro_favoritado : R.string.msg_carro_desfavoritado);
-            // Dispara evento para atualizar a lista de carros
-            EventBus.getDefault().post(new RefreshListEvent());
-            // Atualiza a cor do botão FAB
-            setFavoriteColor(favoritado);
-        }
+
+    @SuppressLint("CheckResult")
+    private void taskFavoritar() {
+        Observable.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                // Salva o carro no banco de dados
+                return FavoritosService.favoritar(carro);
+            }
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean favoritado) {
+                // Dispara evento para atualizar a lista de carros
+                EventBus.getDefault().post(new RefreshListEvent());
+                // Alerta de sucesso
+                toast(favoritado ? R.string.msg_carro_favoritado : R.string.msg_carro_desfavoritado);
+
+                // Atualiza a cor do botão FAB
+                setFavoriteColor(favoritado);
+            }
+        });
     }
 
     // Desenha a cor do FAB conforme está favoritado ou não.
@@ -235,19 +259,6 @@ public class CarroActivity extends BaseActivity {
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setBackgroundTintList(new ColorStateList(new int[][]{new int[]{0}}, new int[]{fundo}));
         fab.setColorFilter(cor);
-    }
-
-    // Atualiza a cor do botão FAB, se o carro está favoritado ou não
-    private class TaskLoadFavoritos extends AsyncTask<Void, Void, Boolean> {
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // Verifica se o carro está favoritado.
-            Boolean favorito = FavoritosService.isFavorito(carro);
-            return favorito;
-        }
-        protected void onPostExecute(Boolean favorito) {
-            setFavoriteColor(favorito);
-        }
     }
 
     // Valida se a permissão foi concedida pelo usuário

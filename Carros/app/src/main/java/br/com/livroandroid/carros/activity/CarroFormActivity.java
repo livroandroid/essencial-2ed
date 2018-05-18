@@ -23,21 +23,15 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.Callable;
 
 import br.com.livroandroid.carros.R;
-import br.com.livroandroid.carros.adapter.CarroAdapter;
 import br.com.livroandroid.carros.domain.Carro;
-import br.com.livroandroid.carros.domain.TipoCarro;
-import br.com.livroandroid.carros.domain.okhttp.CarroService;
 import br.com.livroandroid.carros.domain.Response;
+import br.com.livroandroid.carros.domain.TipoCarro;
 import br.com.livroandroid.carros.domain.UploadService;
 import br.com.livroandroid.carros.domain.event.RefreshListEvent;
-import br.com.livroandroid.carros.domain.retrofit.CarroServiceRetrofit;
-import br.com.livroandroid.carros.domain.rx.CarroServiceRetrofitRx;
-import br.com.livroandroid.carros.domain.rx.CarrosRetrofitRx;
-import br.com.livroandroid.carros.fragments.CarrosFragment;
+import br.com.livroandroid.carros.domain.okhttp.CarroService;
 import br.com.livroandroid.carros.utils.ImageResizeUtils;
 import br.com.livroandroid.carros.utils.SDCardUtils;
 import io.reactivex.Observable;
