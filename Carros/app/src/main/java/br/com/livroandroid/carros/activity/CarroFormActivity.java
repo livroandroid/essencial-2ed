@@ -29,6 +29,7 @@ import java.util.concurrent.Callable;
 import br.com.livroandroid.carros.R;
 import br.com.livroandroid.carros.adapter.CarroAdapter;
 import br.com.livroandroid.carros.domain.Carro;
+import br.com.livroandroid.carros.domain.TipoCarro;
 import br.com.livroandroid.carros.domain.okhttp.CarroService;
 import br.com.livroandroid.carros.domain.Response;
 import br.com.livroandroid.carros.domain.UploadService;
@@ -144,11 +145,11 @@ public class CarroFormActivity extends BaseActivity {
             tDesc.setText(carro.desc);
 
             // Tipo
-            if (getString(R.string.classicos).equals(carro.tipo)) {
+            if (TipoCarro.classicos.name().equals(carro.tipo)) {
                 tTipo.check(R.id.tipoClassico);
-            } else if (getString(R.string.esportivos).equals(carro.tipo)) {
+            } else if (TipoCarro.esportivos.name().equals(carro.tipo)) {
                 tTipo.check(R.id.tipoEsportivo);
-            } else if (getString(R.string.luxo).equals(carro.tipo)) {
+            } else if (TipoCarro.luxo.name().equals(carro.tipo)) {
                 tTipo.check(R.id.tipoLuxo);
             }
         }
@@ -156,6 +157,7 @@ public class CarroFormActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // Menu com o botão de Salvar
         getMenuInflater().inflate(R.menu.menu_carro_form, menu);
         return true;
     }
@@ -170,12 +172,12 @@ public class CarroFormActivity extends BaseActivity {
     }
 
     // AsyncTask
+//    private void taskSalvar() {
+//        new SalvarCarroTask().execute();
+//    }
+
     @SuppressLint("CheckResult")
     private void taskSalvar() {
-        // AsyncTask
-//        new SalvarCarroTask().execute();
-
-        // Cria o carro para salvar
         Observable.fromCallable(new Callable<Response>() {
             @Override
             public Response call() throws Exception {
@@ -191,14 +193,15 @@ public class CarroFormActivity extends BaseActivity {
                 }
 
                 // Salva o carro
-                Response response = CarroServiceRetrofit.save(c);
+                Response response = CarroService.save(c);
                 return response;
             }
-        }).subscribeOn(Schedulers.io())
+        })
+        .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Consumer<Response>() {
             @Override
-            public void accept(Response response) throws Exception {
+            public void accept(Response response) {
                 if(response != null) {
                     // Dispara evento para atualizar a lista de carros
                     EventBus.getDefault().post(new RefreshListEvent());
@@ -214,7 +217,7 @@ public class CarroFormActivity extends BaseActivity {
 
     // Task para buscar os carros
     // AsyncTask
-    /*private class SalvarCarroTask extends AsyncTask<Void, Void, Response> {
+    private class SalvarCarroTask extends AsyncTask<Void, Void, Response> {
         @Override
         protected Response doInBackground(Void... params) {
             try {
@@ -250,7 +253,7 @@ public class CarroFormActivity extends BaseActivity {
                 finish();
             }
         }
-    }*/
+    }
 
     // Cria um carro com os valores do formulário
     private Carro getCarro() {
