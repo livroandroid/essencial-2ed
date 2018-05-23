@@ -175,20 +175,20 @@ public class CarroFormActivity extends BaseActivity {
         Observable.fromCallable(new Callable<Response>() {
             @Override
             public Response call() throws Exception {
-                // Cria o carro para salvar
-                Carro c = getCarro();
+            // Cria o carro para salvar
+            Carro c = getCarro();
 
-                // Upload da foto
-                if(file != null && file.exists()) {
-                    Response response = UploadService.upload(file);
-                    if(response.isOk()) {
-                        c.urlFoto = response.url;
-                    }
+            // Upload da foto
+            if(file != null && file.exists()) {
+                Response response = UploadService.upload(file);
+                if(response.isOk()) {
+                    c.urlFoto = response.url;
                 }
+            }
 
-                // Salva o carro
-                Response response = CarroService.save(c);
-                return response;
+            // Salva o carro
+            Response response = CarroService.save(c);
+            return response;
             }
         })
         .subscribeOn(Schedulers.io())
@@ -196,15 +196,15 @@ public class CarroFormActivity extends BaseActivity {
         .subscribe(new Consumer<Response>() {
             @Override
             public void accept(Response response) {
-                if(response != null) {
-                    // Dispara evento para atualizar a lista de carros
-                    EventBus.getDefault().post(new RefreshListEvent());
+            if(response != null) {
+                // Dispara evento para atualizar a lista de carros
+                EventBus.getDefault().post(new RefreshListEvent());
 
-                    // Mostra alerta de sucesso
-                    toast(response.msg);
-                    Log.d(TAG,"Carro salvo: " + response.id);
-                    finish();
-                }
+                // Mostra alerta de sucesso
+                toast(response.msg);
+                Log.d(TAG,"Carro salvo: " + response.id);
+                finish();
+            }
             }
         });
     }
